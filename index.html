@@ -5,7 +5,7 @@
 <title>Nexa CRM - Lead Entry</title>
 <style>
   :root{
-    --accent:#1a56db; --dark:#111827; --gray:#f6f7f9; --border:#e2e5ea; --text:#1f2937; --muted:#6b7280;
+    --accent:#3b82f6; --dark:#f4f6f9; --gray:#1c1f26; --border:#3a3e48; --text:#eceef2; --muted:#a3abba;
   }
   *{box-sizing:border-box;}
   html, body{
@@ -60,10 +60,10 @@
     max-width:480px;
     width:100%;
     margin:12px auto 24px;
-    background:#fff;
+    background:#252932;
     border-radius:10px;
     border:1px solid var(--border);
-    box-shadow:0 2px 10px rgba(17,24,39,0.06);
+    box-shadow:0 4px 18px rgba(0,0,0,0.35);
     overflow:hidden;
     display:flex;
     flex-direction:column;
@@ -71,10 +71,10 @@
   .form-title{
     padding:12px 22px;
     border-bottom:1px solid var(--border);
-    background:#fafbfc;
+    background:#20232c;
     flex:none;
   }
-  .form-title h2{margin:0;font-size:14px;color:var(--dark);}
+  .form-title h2{margin:0;font-size:14px;color:#f4f6f9;}
   .form-title p{margin:2px 0 0;font-size:11px;color:var(--muted);}
   .form-body{
     padding:16px 22px;
@@ -87,7 +87,7 @@
     font-size:11px;
     font-weight:600;
     margin-bottom:4px;
-    color:#374151;
+    color:#b7bdc9;
   }
   input, select, textarea{
     width:100%;
@@ -97,16 +97,18 @@
     font-size:13px;
     font-family:inherit;
     color:var(--text);
-    background:#fff;
+    background:#2c3039;
     transition:border-color .15s ease, box-shadow .15s ease;
   }
+  input::placeholder, textarea::placeholder{color:#666d7a;}
+  select option{background:#2c3039; color:var(--text);}
   input:hover, select:hover, textarea:hover{
-    border-color:#c2c8d1;
+    border-color:#3d414b;
   }
   input:focus, select:focus, textarea:focus{
     outline:none;
     border-color:var(--accent);
-    box-shadow:0 0 0 3px rgba(26,86,219,0.12);
+    box-shadow:0 0 0 3px rgba(59,130,246,0.20);
   }
   textarea{resize:none;min-height:44px;overflow:hidden;}
   .chip-row{
@@ -121,18 +123,18 @@
     font-weight:600;
     border-radius:20px;
     border:1px solid var(--border);
-    background:#fff;
+    background:#2c3039;
     color:var(--accent);
     cursor:pointer;
     transition:background .15s ease, border-color .15s ease;
   }
   .chip:hover{
-    background:#eef2fb;
+    background:#262a33;
     border-color:var(--accent);
   }
   input:disabled{
-    background:#f5f6f8;
-    color:var(--text);
+    background:#282c35;
+    color:#c3c8d1;
     cursor:not-allowed;
     opacity:1;
   }
@@ -151,14 +153,14 @@
     cursor:pointer;
     transition:filter .15s ease;
   }
-  #copyBtn{background:#34d399;color:#064e3b;}
-  #copyBtn:hover{background:#22c58e;}
-  #resetBtn{background:#f87171;color:#7f1d1d;}
-  #resetBtn:hover{background:#ef5a5a;}
+  #copyBtn{background:#34d399;color:#053d2e;}
+  #copyBtn:hover{filter:brightness(1.08);}
+  #resetBtn{background:#f87171;color:#5c1414;}
+  #resetBtn:hover{filter:brightness(1.08);}
   .status{
     text-align:center;
     font-size:11px;
-    color:#059669;
+    color:#4ade80;
     min-height:14px;
   }
 </style>
@@ -199,6 +201,7 @@
 
     <div class="field">
       <label for="variant">Variant name</label>
+      <select id="variantSelect" style="display:none;"></select>
       <input type="text" id="variant" placeholder="e.g. Zeta, Alpha, Delta AMT">
     </div>
 
@@ -251,9 +254,12 @@
 <script>
 function buildText(){
   const val = id => document.getElementById(id).value.trim();
+  const variantValue = document.getElementById('variantSelect').style.display === 'block'
+    ? val('variantSelect')
+    : val('variant');
   return (
 "Customer Name - " + val('custName') + "\n" +
-"Vehicle Model and Variant Name - " + val('vehicleModel') + (val('variant') ? (" " + val('variant')) : "") + "\n" +
+"Vehicle Model and Variant Name - " + val('vehicleModel') + (variantValue ? (" " + variantValue) : "") + "\n" +
 "Buying Timeline - " + val('timeline') + "\n" +
 "Dealership Name and Location - Singla Link Agency, Lajpat Nagar\n" +
 "Email Id - " + val('email') + "\n" +
@@ -282,6 +288,36 @@ function autoGrow(){
   enquiryBox.style.height = enquiryBox.scrollHeight + 'px';
 }
 enquiryBox.addEventListener('input', autoGrow);
+
+const variantData = {
+  "Maruti Suzuki Nexa Fronx": ["Sigma","Delta","Sigma CNG","Delta Plus","Delta AMT","Delta Plus AMT","Delta CNG","Delta Plus Turbo","Zeta Turbo","Alpha Turbo","Alpha Turbo DT","Zeta Turbo AT","Alpha Turbo AT","Alpha Turbo DT AT"],
+  "Maruti Suzuki Nexa Baleno": ["Sigma","Delta","Delta AMT","Zeta","Delta CNG","Zeta AMT","Alpha","Zeta CNG","Alpha AMT"],
+  "Maruti Suzuki Nexa E-Vitara": ["Delta","Zeta","Alpha","Alpha Dual Tone"],
+  "Maruti Suzuki Nexa XL6": ["Zeta","Zeta CNG","Alpha","Zeta AT","Alpha Plus","Alpha Plus Dual Tone","Alpha AT","Alpha Plus AT","Alpha Plus AT Dual Tone"],
+  "Maruti Suzuki Nexa Invicto": ["Zeta Plus 7Str","Zeta Plus 8Str","Alpha Plus 7Str"],
+  "Maruti Suzuki Nexa Jimny": ["Zeta","Alpha","Zeta AT","Alpha Dual Tone","Alpha AT","Alpha Dual Tone AT"]
+};
+
+const vehicleModelSelect = document.getElementById('vehicleModel');
+const variantSelect = document.getElementById('variantSelect');
+const variantInput = document.getElementById('variant');
+
+vehicleModelSelect.addEventListener('change', function(){
+  const selected = this.value;
+  const variants = variantData[selected];
+
+  if (variants) {
+    variantSelect.innerHTML = '<option value="">Select variant</option>' +
+      variants.map(v => '<option value="' + v + '">' + v + '</option>').join('');
+    variantSelect.style.display = 'block';
+    variantInput.style.display = 'none';
+    variantInput.value = '';
+  } else {
+    variantSelect.style.display = 'none';
+    variantSelect.innerHTML = '';
+    variantInput.style.display = 'block';
+  }
+});
 
 document.querySelectorAll('.chip').forEach(function(chip){
   chip.addEventListener('click', function(){
@@ -322,6 +358,10 @@ document.getElementById('resetBtn').addEventListener('click', function(){
   document.getElementById('custName').value='';
   document.getElementById('vehicleModel').value='';
   document.getElementById('variant').value='';
+  document.getElementById('variant').style.display='block';
+  document.getElementById('variantSelect').value='';
+  document.getElementById('variantSelect').style.display='none';
+  document.getElementById('variantSelect').innerHTML='';
   document.getElementById('timeline').value='';
   document.getElementById('email').value='';
   document.getElementById('location').value='';
