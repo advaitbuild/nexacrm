@@ -163,31 +163,54 @@
     color:#4ade80;
     min-height:14px;
   }
-  .specs-wrap{
-    max-width:900px;
+  .page-wrap{
+    display:flex;
+    flex-direction:row;
+    align-items:flex-start;
+    justify-content:center;
+    gap:56px;
     width:100%;
-    padding:0 20px 40px;
+    max-width:1300px;
     margin:0 auto;
+    padding:24px 32px;
+    flex-wrap:wrap;
   }
-  .specs-heading{
-    text-align:center;
-    font-size:13px;
-    font-weight:600;
-    color:var(--muted);
-    text-transform:uppercase;
-    letter-spacing:1.5px;
-    margin:0 0 14px;
+  .specs-col{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    width:230px;
+    flex:none;
+    padding-top:56px;
   }
-  .specs-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(190px, 1fr));
-    gap:20px 22px;
+  .main-col{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    flex:none;
+    width:480px;
+    max-width:100%;
   }
   .spec-card{
     background:#252932;
     border:1px solid var(--border);
     border-radius:10px;
-    padding:16px 18px;
+    padding:14px 16px;
+    opacity:0;
+    max-height:0;
+    overflow:hidden;
+    padding-top:0;
+    padding-bottom:0;
+    border-width:0;
+    transform:translateY(-6px);
+    transition:opacity .25s ease, transform .25s ease, max-height .3s ease, padding .25s ease, border-width .25s ease;
+  }
+  .spec-card.active{
+    opacity:1;
+    max-height:220px;
+    padding:14px 16px;
+    border-width:1px;
+    transform:translateY(0);
   }
   .spec-card h4{
     margin:0;
@@ -214,99 +237,17 @@
     line-height:1.4;
     color:var(--muted);
   }
+  @media (max-width: 980px){
+    .specs-col{display:none;}
+  }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>NEXA <span class="dot">&middot;</span> CRM</h1>
-  <span class="tagline">| Lead Capture</span>
-</div>
+<div class="page-wrap">
 
-<div class="container">
-  <div class="form-title">
-    <h2>New customer enquiry</h2>
-    <p>Fill in the details below and copy the formatted record.</p>
-  </div>
-
-  <div class="form-body">
-    <div class="field">
-      <label for="custName">Customer name</label>
-      <input type="text" id="custName" placeholder="Enter customer full name">
-    </div>
-
-    <div class="field">
-      <label for="vehicleModel">Vehicle model</label>
-      <select id="vehicleModel">
-        <option value="">Select model</option>
-        <option value="Maruti Suzuki Nexa Fronx">Maruti Suzuki Nexa Fronx</option>
-        <option value="Maruti Suzuki Nexa Baleno">Maruti Suzuki Nexa Baleno</option>
-        <option value="Maruti Suzuki Nexa Grand Vitara">Maruti Suzuki Nexa Grand Vitara</option>
-        <option value="Maruti Suzuki Nexa E-Vitara">Maruti Suzuki Nexa E-Vitara</option>
-        <option value="Maruti Suzuki Nexa XL6">Maruti Suzuki Nexa XL6</option>
-        <option value="Maruti Suzuki Nexa Invicto">Maruti Suzuki Nexa Invicto</option>
-        <option value="Maruti Suzuki Nexa Jimny">Maruti Suzuki Nexa Jimny</option>
-        <option value="Maruti Suzuki Nexa Ignis">Maruti Suzuki Nexa Ignis</option>
-      </select>
-    </div>
-
-    <div class="field">
-      <label for="variant">Variant name</label>
-      <select id="variantSelect" style="display:none;"></select>
-      <input type="text" id="variant" placeholder="e.g. Zeta, Alpha, Delta AMT">
-    </div>
-
-    <div class="field">
-      <label for="timeline">Buying timeline</label>
-      <select id="timeline">
-        <option value="">Select timeline</option>
-        <option>1 week</option>
-        <option>2 week</option>
-        <option>1 month</option>
-        <option>1 to 1.5 month</option>
-        <option>1 to 2 month</option>
-      </select>
-    </div>
-
-    <div class="field">
-      <label for="dealership">Dealership name and location</label>
-      <input type="text" id="dealership" value="Singla Link Agency, Lajpat Nagar" disabled>
-    </div>
-
-    <div class="field">
-      <label for="email">Email ID</label>
-      <input type="email" id="email" placeholder="customer@email.com">
-      <div class="chip-row">
-        <button type="button" class="chip" data-domain="@gmail.com">@gmail.com</button>
-        <button type="button" class="chip" data-domain="@outlook.com">@outlook.com</button>
-        <button type="button" class="chip" data-domain="@yahoo.com">@yahoo.com</button>
-      </div>
-    </div>
-
-    <div class="field">
-      <label for="location">Customer location</label>
-      <input type="text" id="location" placeholder="e.g. Lajpat Nagar, New Delhi">
-    </div>
-
-    <div class="field">
-      <label for="enquiry">Key enquiry</label>
-      <textarea id="enquiry" placeholder="Notes on customer requirement, questions asked, etc."></textarea>
-    </div>
-
-    <div class="status" id="status"></div>
-
-    <div class="actions">
-      <button id="copyBtn">Copy details</button>
-      <button id="resetBtn">Reset form</button>
-    </div>
-  </div>
-</div>
-
-<div class="specs-wrap">
-  <h3 class="specs-heading">Model specifications</h3>
-  <div class="specs-grid">
-
-    <div class="spec-card">
+  <div class="specs-col" id="specsLeft">
+    <div class="spec-card" id="spec-baleno">
       <h4>Baleno</h4>
       <p class="spec-type">Premium Hatchback</p>
       <ul>
@@ -317,7 +258,7 @@
       </ul>
     </div>
 
-    <div class="spec-card">
+    <div class="spec-card" id="spec-fronx">
       <h4>Fronx</h4>
       <p class="spec-type">Compact Crossover SUV</p>
       <ul>
@@ -328,7 +269,7 @@
       </ul>
     </div>
 
-    <div class="spec-card">
+    <div class="spec-card" id="spec-grandvitara">
       <h4>Grand Vitara</h4>
       <p class="spec-type">Mid-size SUV</p>
       <ul>
@@ -338,7 +279,7 @@
       </ul>
     </div>
 
-    <div class="spec-card">
+    <div class="spec-card" id="spec-evitara">
       <h4>E-Vitara</h4>
       <p class="spec-type">Electric SUV (EV)</p>
       <ul>
@@ -347,8 +288,96 @@
         <li>Electric</li>
       </ul>
     </div>
+  </div>
 
-    <div class="spec-card">
+  <div class="main-col">
+    <div class="header">
+      <h1>NEXA <span class="dot">&middot;</span> CRM</h1>
+      <span class="tagline">| Lead Capture</span>
+    </div>
+
+    <div class="container">
+      <div class="form-title">
+        <h2>New customer enquiry</h2>
+        <p>Fill in the details below and copy the formatted record.</p>
+      </div>
+
+      <div class="form-body">
+        <div class="field">
+          <label for="custName">Customer name</label>
+          <input type="text" id="custName" placeholder="Enter customer full name">
+        </div>
+
+        <div class="field">
+          <label for="vehicleModel">Vehicle model</label>
+          <select id="vehicleModel">
+            <option value="">Select model</option>
+            <option value="Maruti Suzuki Nexa Fronx">Maruti Suzuki Nexa Fronx</option>
+            <option value="Maruti Suzuki Nexa Baleno">Maruti Suzuki Nexa Baleno</option>
+            <option value="Maruti Suzuki Nexa Grand Vitara">Maruti Suzuki Nexa Grand Vitara</option>
+            <option value="Maruti Suzuki Nexa E-Vitara">Maruti Suzuki Nexa E-Vitara</option>
+            <option value="Maruti Suzuki Nexa XL6">Maruti Suzuki Nexa XL6</option>
+            <option value="Maruti Suzuki Nexa Invicto">Maruti Suzuki Nexa Invicto</option>
+            <option value="Maruti Suzuki Nexa Jimny">Maruti Suzuki Nexa Jimny</option>
+            <option value="Maruti Suzuki Nexa Ignis">Maruti Suzuki Nexa Ignis</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="variant">Variant name</label>
+          <select id="variantSelect" style="display:none;"></select>
+          <input type="text" id="variant" placeholder="e.g. Zeta, Alpha, Delta AMT">
+        </div>
+
+        <div class="field">
+          <label for="timeline">Buying timeline</label>
+          <select id="timeline">
+            <option value="">Select timeline</option>
+            <option>1 week</option>
+            <option>2 week</option>
+            <option>1 month</option>
+            <option>1 to 1.5 month</option>
+            <option>1 to 2 month</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="dealership">Dealership name and location</label>
+          <input type="text" id="dealership" value="Singla Link Agency, Lajpat Nagar" disabled>
+        </div>
+
+        <div class="field">
+          <label for="email">Email ID</label>
+          <input type="email" id="email" placeholder="customer@email.com">
+          <div class="chip-row">
+            <button type="button" class="chip" data-domain="@gmail.com">@gmail.com</button>
+            <button type="button" class="chip" data-domain="@outlook.com">@outlook.com</button>
+            <button type="button" class="chip" data-domain="@yahoo.com">@yahoo.com</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="location">Customer location</label>
+          <input type="text" id="location" placeholder="e.g. Lajpat Nagar, New Delhi">
+        </div>
+
+        <div class="field">
+          <label for="enquiry">Key enquiry</label>
+          <textarea id="enquiry" placeholder="Notes on customer requirement, questions asked, etc."></textarea>
+        </div>
+
+        <div class="status" id="status"></div>
+
+        <div class="actions">
+          <button id="copyBtn">Copy details</button>
+          <button id="resetBtn">Reset form</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="specs-col" id="specsRight">
+    <div class="spec-card" id="spec-invicto">
       <h4>Invicto</h4>
       <p class="spec-type">Flagship Premium MPV</p>
       <ul>
@@ -358,7 +387,7 @@
       </ul>
     </div>
 
-    <div class="spec-card">
+    <div class="spec-card" id="spec-xl6">
       <h4>XL6</h4>
       <p class="spec-type">Premium MPV (6-seater)</p>
       <ul>
@@ -368,7 +397,7 @@
       </ul>
     </div>
 
-    <div class="spec-card">
+    <div class="spec-card" id="spec-ignis">
       <h4>Ignis</h4>
       <p class="spec-type">Premium Hatchback / Urban Crossover</p>
       <ul>
@@ -378,7 +407,7 @@
       </ul>
     </div>
 
-    <div class="spec-card">
+    <div class="spec-card" id="spec-jimny">
       <h4>Jimny</h4>
       <p class="spec-type">Off-road Lifestyle SUV</p>
       <ul>
@@ -387,8 +416,8 @@
         <li>Petrol only</li>
       </ul>
     </div>
-
   </div>
+
 </div>
 
 <script>
@@ -442,6 +471,28 @@ const vehicleModelSelect = document.getElementById('vehicleModel');
 const variantSelect = document.getElementById('variantSelect');
 const variantInput = document.getElementById('variant');
 
+const specIdMap = {
+  "Maruti Suzuki Nexa Fronx": "spec-fronx",
+  "Maruti Suzuki Nexa Baleno": "spec-baleno",
+  "Maruti Suzuki Nexa Grand Vitara": "spec-grandvitara",
+  "Maruti Suzuki Nexa E-Vitara": "spec-evitara",
+  "Maruti Suzuki Nexa XL6": "spec-xl6",
+  "Maruti Suzuki Nexa Invicto": "spec-invicto",
+  "Maruti Suzuki Nexa Jimny": "spec-jimny",
+  "Maruti Suzuki Nexa Ignis": "spec-ignis"
+};
+
+function updateSpecCard(selectedModel){
+  document.querySelectorAll('.spec-card').forEach(function(card){
+    card.classList.remove('active');
+  });
+  const id = specIdMap[selectedModel];
+  if (id) {
+    const card = document.getElementById(id);
+    if (card) card.classList.add('active');
+  }
+}
+
 vehicleModelSelect.addEventListener('change', function(){
   const selected = this.value;
   const variants = variantData[selected];
@@ -457,6 +508,8 @@ vehicleModelSelect.addEventListener('change', function(){
     variantSelect.innerHTML = '';
     variantInput.style.display = 'block';
   }
+
+  updateSpecCard(selected);
 });
 
 document.querySelectorAll('.chip').forEach(function(chip){
@@ -497,6 +550,7 @@ document.getElementById('copyBtn').addEventListener('click', function(){
 document.getElementById('resetBtn').addEventListener('click', function(){
   document.getElementById('custName').value='';
   document.getElementById('vehicleModel').value='';
+  updateSpecCard('');
   document.getElementById('variant').value='';
   document.getElementById('variant').style.display='block';
   document.getElementById('variantSelect').value='';
